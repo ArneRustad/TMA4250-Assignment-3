@@ -1,0 +1,92 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+\usepackage{graphicx}
+%\usepackage{subfig} % use subfig instead
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{subcaption}
+\usepackage{blkarray}
+\usepackage{multicol}
+\usepackage{tabularx}
+\usepackage[english]{babel}
+\usepackage{blindtext}
+\usepackage{cleveref}
+
+
+%vector:
+\newcommand{\vect}[1]{\ensuremath{\boldsymbol{\mathbf{#1} }}}
+%matrix:
+\newcommand{\matr}[1]{\ensuremath{\boldsymbol{\mathbf{#1} }}}
+% Variance
+\newcommand{\Var}{\textrm{Var}}
+% Expectation
+\newcommand{\E}{\textrm{E}}
+% Covariance
+\newcommand{\Cov}{\textrm{Cov}}
+% Correlation
+\newcommand{\Corr}{\textrm{Corr}}
+% Standard Deviation
+\newcommand{\Sd}{\textrm{SD}}
+
+\newcommand{\domain}[1]{\ensuremath{\mathcal{#1}}}
+
+
+\title{Assignment 2: Event Spatial Variables \\
+\vspace{0.5cm}
+\large{TMA4250 Spatial Statistics}
+}
+
+\author{Lene Tillerli Omdal, Arne Rustad}
+\date{March 2021}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem 1: Markov RF}
+
+This problem is based on observations of seismic data over a domain $\domain D \in \mathbb{R}^2$, where the objective is to identify the underlying $\{sand, shale\}$ lithology distribution over $\domain D$, represented respectively by $\{0,1\}$.
+The observations are on a regular $(75\times 75)$ grid $\domain L_D$, and the seismic data is denoted by $\{d(\vect x);\vect x \in \domain L_D\};d(\vect X) \in \mathbb{R}^2$, represented by the $n$-vector $\vect d$. Further the observations of the lithology distribution in a geologically comparable domain $ \domain D_c \subset \mathbb{R}^2$ is available. The distribution is collected on a regular $(66\time66)$ grid $\domain L_D_c$, with the same spacing as $\domain L_D$, over $\domain D_c$. We assume the underlying lithology distribution can be represented by a Mosaic RF $\{l(\vect x); \vect x \in \domain L_D\}; l(\vext x) \in \{0,1\} = \mathbb{L}$ represented by the $n$-vector $\vect l \in \mathbb{L}^n$. The space $\mathbb{L}^n$ is the space of all possible binary $n$-vectors. 
+
+\subsection*{a)}
+
+The seismic data collection procedure defines the likelihood model:
+
+\begin{align*}
+    [d_i|\vect l] = \begin{cases}0.02 +U_i & \text{if } l_i = 0 - \text{sand}\\
+    0.08 +U_i & \text{if } l_i = 1 - \text{shale},
+    \end{cases} \quad ; i = 1, 2, \dots , n
+\end{align*}
+
+with  $U_i; i = 1,2, \dots , n$ iid Gauss$\{0,0.06^2\}$. Since the observations are assumed to be conditionally independent from one node to another and have single-site response, then the likelihood model $p(\vect d| \vect l)$ on factorial form is given as
+
+\begin{align*}
+    [\vect d| \vect l] \sim p(\vect d| \vect l) &= \prod_{i=1}^n p(d_i|\vect l) = \prod_{i=1}^n p (d_i|l_i) = \prod_{i=1}^n \bigg( \phi_1(d_i;0.02, 0.06^2)I(l_i=0)+\phi_2(d_i;0.08,0.06^2)I(l_i=1)\bigg)\\
+    &= \prod_{\substack{i=1 \\ l_i= 0}}^n \phi_1(d_i;0.02, 0.06^2)\prod_{\substack{i=1 \\ l_i = 1}}^n\phi_1(d_i;0.08,0.06^2).
+\end{align*}
+ 
+
+\subsection*{b)}
+
+Consider a uniform, independence prior model on $\vect l$, i.e.
+
+\begin{align*}
+    p(\vect l) = const.
+\end{align*}
+
+From this we develop an expression for the posterior model $p(\vect l | \vect d$. This is given below
+
+\begin{align*}
+    [\vect l | \vect d] \sim p(\vect l | \vect d) &= \frac{p(\vect d| \vect l)p(\vect l)}{p(\vect d}\\
+    &= \frac{\vect d |\vect l) p(\vect l)}{\sum_{\vect l' \in \mathbb{L}^n}p(\vect d| \vect l') p(\vect l')}\\
+    &= \frac{p(\vect d| \vect l)}{\sum_{\vect l' \in \mathbb{L}^n} p (\vect d | \vect l')}\\
+    &= \frac{\prod_{i=1}^n \bigg( \phi_1(d_i;0.02, 0.06^2)I(l_i=0)+\phi_2(d_i;0.08,0.06^2)I(l_i=1)\bigg)}{\sum_{\vect l' \in \mathbb{L}^n} \prod_{i=1}^n \bigg( \phi_1(d_i;0.02, 0.06^2)I(l'_i=0)+\phi_2(d_i;0.08,0.06^2)I(l'_i=1)\bigg)}.
+\end{align*}
+
+Then we simulate $6$ realizations of the posterior Mosaic RF $\{l(\vect x); \vect x \in \domain L_D| \vect D\}$. These are  displayed as maps in Figure \ref{}. 
+
+
+\end{document}
